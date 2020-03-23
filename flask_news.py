@@ -47,47 +47,6 @@ def detail(pk):
     new_obj = News.query.get(pk)
     return render_template("detail.html", new_obj = new_obj)
 
-@app.route('/admin/')
-@app.route('/admin/<int:page>/')
-def admin(page = None):
-    if page is None:
-        page = 1
-        page_data = News.query.filter_by(is_valid=1).paginate(page=page, per_page = 4)
-        return render_template("admin/index.html", page_data=page_data)
-
-@app.route('/admin/add/', methods=['GET', 'POST'])
-def add():
-    """ 新增新闻 """
-    form = NewsForm()
-    if form.validate_on_submit():
-        n1 = News(
-            title=form.title.data,
-            content=form.content.data,
-            img_url=form.img_url.data,
-            news_type=form.news_type.data,
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
-            )
-        db.session.add(n1)
-        db.session.commit()
-        flash("新增成功")
-        return redirect(url_for('admin'))
-    return render_template("admin/add.html", form=form)
-
-@app.route('/admin/delete/<int:pk>/', methods=['POST'])
-def delete(pk):
-    if request.method == 'POST':
-        obj = News.query.get(pk)
-        if obj is None:
-            return 'no'
-        obj.is_valid = False
-        db.session.add(obj)
-        db.session.commit()
-        return 'yes'
-    return 'no'
-
-app.config['SQLALCHEMY_DATABASE_URI']  = 'mysql://root:13798137@127.0.0.1/news'
-app.config['SECRET_KEY'] = 'my primaryKey'
 
 if __name__ == '__main__':
     app.run(debug=True)
