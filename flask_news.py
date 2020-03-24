@@ -86,7 +86,7 @@ def delete(pk):
         return 'yes'
     return 'no'
 
-app.config['SQLALCHEMY_DATABASE_URI']  = 'mysql://root:password@127.0.0.1/news'
+app.config['SQLALCHEMY_DATABASE_URI']  = 'mysql://root:password@127.0.0.1/tableName'
 app.config['SECRET_KEY'] = 'my primaryKey'
 
 if __name__ == '__main__':
